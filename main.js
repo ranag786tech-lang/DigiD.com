@@ -12,7 +12,7 @@ function createWindow () {
     icon: path.join(__dirname, 'icon.ico'), // optional
     autoHideMenuBar: true // File, Edit wala menu chhupa dega
   })
-  win.loadFile('index.html')
+  win.loadFile('DigiD.html')
 }
 
 app.whenReady().then(() => {
