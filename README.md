@@ -1,8 +1,51 @@
 # 🚀 DigiD AI
 
-![Build Status](https://img.shields.io/github/actions/workflow/status/ranag786tech-lang/DigiD.com/ci.yml?branch=main)
-![License](https://img.shields.io/github/license/ranag786tech-lang/DigiD.com)
-![Repo Size](https://img.shields.io/github/repo-size/ranag786tech-lang/DigiD.com)
-![Stars](https://img.shields.io/github/stars/ranag786tech-lang/DigiD.com?style=social)
+DigiD is a Personal AI SaaS system with multi-agents:
+- 🧠 Knowledge (Research)
+- 🕯️ Noor (Planning)
+- ⚙️ Builder (Development)
 
-🔥 Personal AI System built with Electron + Web Tech
+## 🌐 Features
+- AI Chat (OpenAI)
+- Supabase Auth
+- Cloud Deployment
+- Scalable SaaS Architecture
+
+## 🛠 Tech Stack
+- Next.js (Frontend)
+- Node.js + Express (Backend)
+- Supabase (Auth + DB)
+- OpenAI API
+
+## ⚡ Setup
+
+### 1. Clone
+git clone https://github.com/ranag786tech-lang/DigiD-AI.git
+
+### 2. Install
+cd frontend && npm install  
+cd ../backend && npm install  
+
+### 3. Run
+Frontend:
+npm run dev  
+
+Backend:
+node server.js  
+
+## 🔐 Env Variables
+
+Frontend:
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_KEY=
+
+Backend:
+OPENAI_KEY=
+
+## 🚀 Deploy
+- Frontend → Vercel
+- Backend → Railway / Render
+
+---
+
+🔥 Built by Rana Hamza
