@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DigiD</title>
+<style>
+    :root { --white: #FFFFFF; --black: #111111; --gray: #F5F5F5; --glass: rgba(255,255,255,0.85); }
+    * {
+        margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none;
+    }
+    body { color: var(--black); overflow: hidden; }
+    input, textarea { -webkit-user-select: auto; user-select: auto; }
+
+    #splash { position: fixed; inset: 0; background: var(--white); z-index: 999; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.5s ease; }
+   .loader { width: 60px; height: 60px; border: 3px solid #eee; border-top: 3px solid var(--black); border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+   .splash-text { margin-top: 20px; font-weight: 600; letter-spacing: 2px; opacity: 0; animation: fadeIn 2s forwards; }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+   .screen { display: none; height: 100vh; width: 100vw; }
+   .active { display: flex; }
+
+    #auth { background: var(--white); align-items: center; justify-content: center; flex-direction: column; gap: 15px; padding: 20px; }
+   .card { background: var(--white); border: 1px solid #e5e5e5; border-radius: 16px; padding: 30px; width: 100%; max-width: 340px; }
+    h1 { font-size: 24px; margin-bottom: 20px; text-align: center; }
+    input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+    button { width: 100%; padding: 12px; margin: 6px 0; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 600; }
+   .btn-primary { background: var(--black); color: var(--white); }
+   .btn-outline { background: var(--white); color: var(--black); border: 1px solid var(--black); }
+   .btn-ghost { background: #f5f5f5; color: var(--black); }
+   .divider { text-align: center; margin: 10px 0; color: #888; }
+    #otp-box { display: none; }
+   .error { color: #D32F2F; font-size: 14px; margin-top: 5px; min-height: 18px; }
+
+    #app {
+        flex-direction: column;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1920');
+        background-size: cover; background-position: center; position: relative;
+    }
+    #app::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.2); }
+   .app-header { position: relative; z-index: 2; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+   .app-header img { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--white); }
+   .app-header span { color: var(--white); font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+
+   .main-content { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; gap: 20px; }
+   .logo-text { font-size: 48px; font-weight: 700; color: var(--white); text-shadow: 0 2px 8px rgba(0,0,0,0.4); margin-bottom: 10px; }
+   .search-box { width: 100%; max-width: 600px; background: var(--white); border-radius: 24px; display: flex; align-items: center; padding: 0 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+   .search-box input { flex: 1; border: none; outline: none; padding: 16px 0; font-size: 16px; background: transparent; }
+   .search-icon { color: #666; margin-right: 12px; }
+   .quick-actions { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+   .pill { background: var(--glass); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); padding: 10px 18px; border-radius: 20px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; color: var(--black); }
+   .pill:hover { background: var(--white); }
+
+    #chat-view { position: fixed; inset: 0; background: var(--white); z-index: 500; display: none; flex-direction: column; }
+   .chat-header { padding: 16px 20px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 12px; }
+   .back-btn { font-size: 24px; cursor: pointer; }
+   .chat-area { flex: 1; padding: 20px; overflow-y: auto; background: #fafafa; }
+   .msg { margin: 10px 0; padding: 12px 16px; border-radius: 18px; max-width: 80%; width: fit-content; word-wrap: break-word; }
+   .msg.user { background: var(--black); color: var(--white); margin-left: auto; }
+   .msg.bot { background: var(--white); color: var(--black); border: 1px solid #eee; }
+   .input-bar { display: flex; padding: 15px; border-top: 1px solid #eee; gap: 10px; background: var(--white); }
+   .input-bar input { flex: 1; margin: 0; border: 1px solid #ddd; border-radius: 20px; padding: 12px 16px; }
+   .input-bar button { width: auto; padding: 12px 20px; margin: 0; border-radius: 20px; }
+
+    #hamburger { position: fixed; left: 20px; bottom: 20px; z-index: 100; width: 50px; height: 50px; border-radius: 50%; background: var(--glass); backdrop-filter: blur(10px); color: var(--black); display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.3); }
+    #menu { position: fixed; left: 20px; bottom: 80px; background: var(--glass); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; padding: 10px; width: 220px; z-index: 99; opacity: 0; transform: translateY(10px); pointer-events: none; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+    #menu.show { opacity: 1; transform: translateY(0); pointer-events: all; }
+   .menu-item { padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 500; }
+   .menu-item:hover { background: rgba(255,255,255,0.5); }
+
+    #settings { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 600; }
+</style>
+</head>
+<body>
+
+<div id="splash">
+    <div class="loader"></div>
+    <div class="splash-text">DigiD</div>
+</div>
+
+<div id="auth" class="screen">
+    <div class="card">
+        <h1>Welcome to DigiD</h1>
+        <div id="email-box">
+            <input type="email" id="email" placeholder="Enter your email">
+            <button class="btn-primary" onclick="startSignup()">Continue with Email</button>
+            <div class="divider">or</div>
+            <button class="btn-outline" onclick="googleLogin()">Continue with Google</button>
+            <button class="btn-ghost" onclick="guestLogin()">Login as Guest</button>
+            <p class="error" id="auth-error"></p>
+        </div>
+        <div id="otp-box">
+            <p>Code sent to <b id="otp-email"></b></p>
+            <p style="font-size:12px;color:#888;">Demo: Your code is <b id="demo-code"></b></p>
+            <input type="text" id="otp" placeholder="Enter 6-digit code" maxlength="6">
+            <button class="btn-primary" onclick="verifyOtp()">Verify & Continue</button>
+            <p class="error" id="otp-error"></p>
+        </div>
+    </div>
+</div>
+
+<div id="app" class="screen">
+    <div class="app-header">
+        <span id="user-name">Guest</span>
+        <img id="user-avatar" src="https://ui-avatars.com/api/?name=User&background=111111&color=fff" alt="avatar">
+    </div>
+    <div class="main-content">
+        <div class="logo-text">DigiD</div>
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="home-search" placeholder="Ask DigiD anything..." onkeypress="if(event.key==='Enter') startHomeSearch()">
+        </div>
+        <div class="quick-actions">
+            <div class="pill" onclick="switchChat('builder')">🎨 Image Creator</div>
+            <div class="pill" onclick="switchChat('knowledge')">🎥 Video Creator</div>
+            <div class="pill" onclick="switchChat('noor')">🕯️ Plan Maker</div>
+        </div>
+    </div>
+</div>
+
+<div id="chat-view">
+    <div class="chat-header">
+        <span class="back-btn" onclick="closeChat()">←</span>
+        <div>
+            <div id="chat-title" style="font-weight:600;">Chat with Knowledge 🐜</div>
+            <div style="font-size:12px;color:#666;">DigiD Agent</div>
+        </div>
+    <div class="chat-area" id="chat-area"></div>
+    <div class="input-bar">
+        <input type="text" id="chat-input" placeholder="Type a message...">
+        <button class="btn-primary" onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<div id="hamburger" onclick="toggleMenu()">☰</div>
+<div id="menu">
+    <div class="menu-item" onclick="switchChat('knowledge')">Chat with Knowledge 🐜</div>
+    <div class="menu-item" onclick="switchChat('noor')">Chat with Noor 🕯️</div>
+    <div class="menu-item" onclick="switchChat('builder')">Chat with Builder</div>
+    <div class="menu-item" onclick="openSettings()">User Settings</div>
+    <div class="menu-item" onclick="logout()">Logout</div>
+</div>
+
+<div id="settings">
+    <div class="card">
+        <h1>Edit Profile</h1>
+        <input type="text" id="edit-name" placeholder="Your Name">
+        <input type="file" id="edit-pic" accept="image/*">
+        <button class="btn-primary" onclick="saveSettings()">Save</button>
+        <button class="btn-ghost" onclick="closeSettings()">Cancel</button>
+    </div>
+</div>
+
+<script>
+    let currentUser = null;
+    let currentChat = 'knowledge';
+    let tempEmail = '';
+    let tempOtp = '';
+    let chatHistory = { knowledge: [], noor: [], builder: [] };
+
+    setTimeout(() => {
+        document.getElementById('splash').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('splash').style.display = 'none';
+            checkLogin();
+        }, 500);
+    }, 3500);
+
+    function checkLogin() {
+        const user = localStorage.getItem('digid_user');
+        const history = localStorage.getItem('digid_chats');
+        if (history) chatHistory = JSON.parse(history);
+        if (user) {
+            currentUser = JSON.parse(user);
+            showApp();
+        } else {
+            showScreen('auth');
+        }
+    }
+
+    function validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function startSignup() {
+        const email = document.getElementById('email').value.trim();
+        if (!validateEmail(email)) {
+            document.getElementById('auth-error').innerText = 'Valid email likho bhai';
+            return;
+        }
+        document.getElementById('auth-error').innerText = '';
+        const users = JSON.parse(localStorage.getItem('digid_users') || '{}');
+        if (users[email]) {
+            currentUser = users[email];
+            localStorage.setItem('digid_user', JSON.stringify(currentUser));
+            showApp();
+            return;
+        }
+        tempEmail = email;
+        tempOtp = Math.floor(100000 + Math.random() * 900000).toString();
+        document.getElementById('otp-email').innerText = email;
+        document.getElementById('demo-code').innerText = tempOtp;
+        document.getElementById('email-box').style.display = 'none';
+        document.getElementById('otp-box').style.display = 'block';
+    }
+
+    function verifyOtp() {
+        const otp = document.getElementById('otp').value;
+        if (otp === tempOtp) {
+            const users = JSON.parse(localStorage.getItem('digid_users') || '{}');
+            const newUser = {
+                email: tempEmail, name: tempEmail.split('@')[0],
+                avatar: `https://ui-avatars.com/api/?name=${tempEmail[0].toUpperCase()}&background=111111&color=fff`,
+                created: new Date().toISOString()
+            };
+            users[tempEmail] = newUser;
+            localStorage.setItem('digid_users', JSON.stringify(users));
+            localStorage.setItem('digid_user', JSON.stringify(newUser));
+            currentUser = newUser;
+            showApp();
+        } else {
+            document.getElementById('otp-error').innerText = 'Wrong code. Phir se try karo.';
+        }
+    }
+
+    function googleLogin() {
+        const googleUser = { email: 'google_user@gmail.com', name: 'Google User', avatar: `https://ui-avatars.com/api/?name=G&background=4285F4&color=fff`, created: new Date().toISOString() };
+        localStorage.setItem('digid_user', JSON.stringify(googleUser));
+        currentUser = googleUser;
+        showApp();
+    }
+
+    function guestLogin() {
+        const guestUser = { email: 'guest@local', name: 'Guest', avatar: `https://ui-avatars.com/api/?name=G&background=888&color=fff`, created: new Date().toISOString() };
+        localStorage.setItem('digid_user', JSON.stringify(guestUser));
+        currentUser = guestUser;
+        showApp();
+    }
+
+    function logout() {
+        localStorage.removeItem('digid_user');
+        location.reload();
+    }
+
+    function showApp() {
+        document.getElementById('user-name').innerText = currentUser.name;
+        document.getElementById('user-avatar').src = currentUser.avatar;
+        showScreen('app');
+    }
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function startHomeSearch() {
+        const query = document.getElementById('home-search').value.trim();
+        if (!query) return;
+        switchChat('knowledge');
+        setTimeout(() => addMessage(query, 'user'), 300);
+        setTimeout(() => addMessage('Theek hai, main is par research kar ke summary banata hun...', 'bot'), 800);
+        document.getElementById('home-search').value = '';
+    }
+
+    function toggleMenu() {
+        document.getElementById('menu').classList.toggle('show');
+    }
+
+    function switchChat(type) {
+        currentChat = type;
+        const titles = { knowledge: 'Chat with Knowledge 🐜', noor: 'Chat with Noor 🕯️', builder: 'Chat with Builder' };
+        document.getElementById('chat-title').innerText = titles[type];
+        document.getElementById('chat-view').style.display = 'flex';
+        document.getElementById('chat-area').innerHTML = '';
+        toggleMenu();
+        loadChat();
+    }
+
+    function closeChat() {
+        document.getElementById('chat-view').style.display = 'none';
+    }
+
+    function loadChat() {
+        const history = chatHistory[currentChat];
+        if (history.length === 0) {
+            const welcome = {
+                knowledge: 'Salam! Main Knowledge agent hun. Kya gather karna hai?',
+                noor: 'Salam! Main Noor hun. Facts do, main plan banaunga.',
+                builder: 'Salam! Main Builder hun. Plan do, main bana dunga.'
+            };
+            addMessage(welcome[currentChat], 'bot', false);
+        } else {
+            history.forEach(msg => addMessage(msg.text, msg.type, false));
+        }
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('chat-input');
+        const msg = input.value.trim();
+        if (!msg) return;
+        addMessage(msg, 'user', true);
+        input.value = '';
+        setTimeout(() => {
+            const replies = {
+                knowledge: 'Research complete. 3 main points: 1) Market size... 2) Competitors... 3) Trends...',
+                noor: 'Plan tayyar hai: Step 1: Research validate karo. Step 2: Budget finalize karo. Step 3: Execute.',
+                builder: 'Task complete! Main ne demo output generate kar diya hai. Backend lagao ge to real file banegi.'
+            };
+            addMessage(replies[currentChat], 'bot', true);
+        }, 800);
+    }
+
+    function addMessage(text, type, save = true) {
+        const div = document.createElement('div');
+        div.className = `msg ${type}`;
+        div.innerText = text;
+        document.getElementById('chat-area').appendChild(div);
+        document.getElementById('chat-area').scrollTop = 99999;
+        if (save) {
+            chatHistory[currentChat].push({ text, type });
+            localStorage.setItem('digid_chats', JSON.stringify(chatHistory));
+        }
+    }
+
+    function openSettings() {
+        document.getElementById('edit-name').value = currentUser.name;
+        document.getElementById('settings').style.display = 'flex';
+        toggleMenu();
+    }
+    function closeSettings() {
+        document.getElementById('settings').style.display = 'none';
+    }
+    function saveSettings() {
+        const newName = document.getElementById('edit-name').value.trim();
+        if (!newName) { alert('Name khali nahi ho sakta'); return; }
+        currentUser.name = newName;
+        const fileInput = document.getElementById('edit-pic');
+        if (fileInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = e => { currentUser.avatar = e.target.result; finishSave(); };
+            reader.readAsDataURL(fileInput.files[0]);
+        } else {
+            finishSave();
+        }
+    }
+    function finishSave() {
+        localStorage.setItem('digid_user', JSON.stringify(currentUser));
+        const users = JSON.parse(localStorage.getItem('digid_users') || '{}');
+        if (users[currentUser.email]) {
+            users[currentUser.email] = currentUser;
+            localStorage.setItem('digid_users', JSON.stringify(users));
+        }
+        document.getElementById('user-name').innerText = currentUser.name;
+        document.getElementById('user-avatar').src = currentUser.avatar;
+        closeSettings();
+    }
+
+    document.getElementById('chat-input').addEventListener('keypress', e => {
+        if (e.key === 'Enter') sendMessage();
+    });
+</script>
+</body>
+</html>
