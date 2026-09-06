@@ -30,16 +30,12 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; }
     body { color: var(--black); overflow: hidden; background: #000; }
     input, textarea { -webkit-user-select: auto; user-select: auto; }
-
     #splash { position: fixed; inset: 0; background: var(--white); z-index: 999; display: flex; align-items: center; justify-content: center; flex-direction: column; transition: opacity 0.5s ease; }
     .loader { width: 60px; height: 60px; border: 3px solid #eee; border-top: 3px solid var(--black); border-radius: 50%; animation: spin 1s linear infinite; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
-    .splash-text { margin-top: 20px; font-weight: 700; letter-spacing: 3px; font-size: 24px; animation: fadeIn 1s forwards; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
+    .splash-text { margin-top: 20px; font-weight: 700; letter-spacing: 3px; font-size: 24px; }
     .screen { display: none; height: 100vh; width: 100vw; }
     .active { display: flex; }
-
     #auth { background: var(--white); align-items: center; justify-content: center; flex-direction: column; gap: 15px; padding: 20px; }
     .card { background: var(--white); border: 1px solid #e5e5e5; border-radius: 16px; padding: 30px; width: 100%; max-width: 380px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
     h1 { font-size: 24px; margin-bottom: 20px; text-align: center; }
@@ -47,362 +43,90 @@
     input:focus { border-color: var(--black); }
     button { width: 100%; padding: 12px; margin: 6px 0; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; font-weight: 600; transition: 0.2s; }
     .btn-primary { background: var(--black); color: var(--white); }
-    .btn-primary:active { transform: scale(0.98); }
     .btn-outline { background: var(--white); color: var(--black); border: 1px solid var(--black); }
     .btn-ghost { background: #f5f5f5; color: var(--black); }
     .divider { text-align: center; margin: 12px 0; color: #888; font-size: 14px; }
     #otp-box { display: none; }
     .error { color: #D32F2F; font-size: 13px; margin-top: 5px; min-height: 18px; }
-
     #app { flex-direction: column; background: #111; background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1920'); background-size: cover; background-position: center; position: relative; }
     #app::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.35); backdrop-filter: blur(2px); }
     .app-header { position: relative; z-index: 2; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
     .app-header img { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--white); }
-    .app-header span { color: var(--white); font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-
+    .app-header span { color: var(--white); font-weight: 600; }
     .main-content { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; gap: 20px; }
-    .logo-text { font-size: 52px; font-weight: 800; color: var(--white); text-shadow: 0 3px 12px rgba(0,0,0,0.5); letter-spacing: -1px; }
+    .logo-text { font-size: 52px; font-weight: 800; color: var(--white); text-shadow: 0 3px 12px rgba(0,0,0,0.5); }
     .logo-sub { color: rgba(255,255,255,0.8); font-size: 15px; margin-top: -15px; }
     .search-box { width: 100%; max-width: 620px; background: var(--white); border-radius: 28px; display: flex; align-items: center; padding: 0 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
     .search-box input { flex: 1; border: none; outline: none; padding: 18px 0; font-size: 16px; background: transparent; }
-    .search-icon { color: #666; margin-right: 12px; font-size: 18px; }
+    .search-icon { color: #666; margin-right: 12px; }
     .quick-actions { display: flex; gap: 12px; margin-top: 10px; flex-wrap: wrap; justify-content: center; }
-    .pill { background: var(--glass); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.4); padding: 10px 18px; border-radius: 22px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; color: var(--black); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .pill:hover { background: var(--white); transform: translateY(-1px); }
-
+    .pill { background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.4); padding: 10px 18px; border-radius: 22px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; }
     #chat-view { position: fixed; inset: 0; background: var(--white); z-index: 500; display: none; flex-direction: column; }
     .chat-header { padding: 16px 20px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 12px; background: #fff; }
     .back-btn { font-size: 22px; cursor: pointer; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-    .back-btn:hover { background: #f5f5f5; }
     .chat-area { flex: 1; padding: 20px; overflow-y: auto; background: #fafafa; display: flex; flex-direction: column; }
     .msg { margin: 8px 0; padding: 12px 16px; border-radius: 18px; max-width: 85%; width: fit-content; word-wrap: break-word; line-height: 1.5; font-size: 14.5px; white-space: pre-wrap; }
     .msg.user { background: var(--black); color: var(--white); margin-left: auto; border-bottom-right-radius: 6px; }
     .msg.bot { background: var(--white); color: var(--black); border: 1px solid #eee; border-bottom-left-radius: 6px; }
-    .msg.bot pre { background: #111; color: #0f0; padding: 12px; border-radius: 8px; overflow-x: auto; margin: 10px 0; font-size: 13px; }
     .input-bar { display: flex; padding: 14px; border-top: 1px solid #eee; gap: 10px; background: var(--white); }
-    .input-bar input { flex: 1; margin: 0; border: 1px solid #ddd; border-radius: 24px; padding: 12px 18px; }
-    .input-bar button { width: auto; padding: 12px 22px; margin: 0; border-radius: 24px; }
-
-    #hamburger { position: fixed; left: 20px; bottom: 20px; z-index: 100; width: 52px; height: 52px; border-radius: 50%; background: var(--glass); backdrop-filter: blur(12px); color: var(--black); display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.4); }
-    #menu { position: fixed; left: 20px; bottom: 82px; background: rgba(255,255,255,0.95); backdrop-filter: blur(15px); border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; padding: 8px; width: 230px; z-index: 99; opacity: 0; transform: translateY(10px); pointer-events: none; transition: all 0.25s ease; box-shadow: 0 8px 30px rgba(0,0,0,0.15); }
+    .input-bar input { flex: 1; border: 1px solid #ddd; border-radius: 24px; padding: 12px 18px; }
+    .input-bar button { width: auto; padding: 12px 22px; border-radius: 24px; }
+    #hamburger { position: fixed; left: 20px; bottom: 20px; z-index: 100; width: 52px; height: 52px; border-radius: 50%; background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,0.2); }
+    #menu { position: fixed; left: 20px; bottom: 82px; background: rgba(255,255,255,0.95); backdrop-filter: blur(15px); border-radius: 14px; padding: 8px; width: 230px; z-index: 99; opacity: 0; transform: translateY(10px); pointer-events: none; transition: all 0.25s ease; box-shadow: 0 8px 30px rgba(0,0,0,0.15); }
     #menu.show { opacity: 1; transform: translateY(0); pointer-events: all; }
     .menu-item { padding: 12px 14px; border-radius: 10px; cursor: pointer; font-weight: 500; font-size: 14px; display: flex; align-items: center; gap: 10px; }
     .menu-item:hover { background: #f2f2f2; }
-
     #settings { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 600; padding: 20px; }
     .token-hint { font-size: 11px; color: #666; margin-top: -4px; margin-bottom: 8px; }
     .token-hint a { color: #111; text-decoration: underline; }
 </style>
 </head>
 <body>
-
-<div id="splash">
-    <div class="loader"></div>
-    <div class="splash-text">DigiD</div>
-</div>
-
-<div id="auth" class="screen">
-    <div class="card">
-        <h1>Welcome to DigiD</h1>
-        <div id="email-box">
-            <input type="email" id="email" placeholder="Enter your email">
-            <button class="btn-primary" onclick="startSignup()">Continue with Email</button>
-            <div class="divider">or</div>
-            <button class="btn-outline" onclick="googleLogin()">Continue with Google</button>
-            <button class="btn-ghost" onclick="guestLogin()">Login as Guest</button>
-            <p class="error" id="auth-error"></p>
-        </div>
-        <div id="otp-box">
-            <p>Code sent to <b id="otp-email"></b></p>
-            <p style="font-size:12px;color:#888;">Demo: Your code is <b id="demo-code"></b></p>
-            <input type="text" id="otp" placeholder="Enter 6-digit code" maxlength="6">
-            <button class="btn-primary" onclick="verifyOtp()">Verify & Continue</button>
-            <p class="error" id="otp-error"></p>
-        </div>
-    </div>
-</div>
-
-<div id="app" class="screen">
-    <div class="app-header">
-        <span id="user-name">Guest</span>
-        <img id="user-avatar" src="https://ui-avatars.com/api/?name=User&background=111111&color=fff" alt="avatar">
-    </div>
-    <div class="main-content">
-        <div class="logo-text">DigiD</div>
-        <div class="logo-sub">Your Personal AI Companion</div>
-        <div class="search-box">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="home-search" placeholder="Ask DigiD anything... code, plan, research" onkeypress="if(event.key==='Enter') startHomeSearch()">
-        </div>
-        <div class="quick-actions">
-            <div class="pill" onclick="switchChat('builder')">🎨 Image Creator</div>
-            <div class="pill" onclick="switchChat('knowledge')">🧠 Research</div>
-            <div class="pill" onclick="switchChat('noor')">🕯️ Plan Maker</div>
-            <div class="pill" onclick="switchChat('builder')">💻 Code Builder</div>
-        </div>
-    </div>
-</div>
-
-<div id="chat-view">
-    <div class="chat-header">
-        <span class="back-btn" onclick="closeChat()">←</span>
-        <div>
-            <div id="chat-title" style="font-weight:600;">Chat with Knowledge 🧠</div>
-            <div style="font-size:12px;color:#666;">DigiD Agent • Working AI</div>
-        </div>
-    </div>
-    <div class="chat-area" id="chat-area"></div>
-    <div class="input-bar">
-        <input type="text" id="chat-input" placeholder="Type a message...">
-        <button class="btn-primary" onclick="sendMessage()">Send</button>
-    </div>
-</div>
-
+<div id="splash"><div class="loader"></div><div class="splash-text">DigiD</div></div>
+<div id="auth" class="screen"><div class="card"><h1>Welcome to DigiD</h1><div id="email-box"><input type="email" id="email" placeholder="Enter your email"><button class="btn-primary" onclick="startSignup()">Continue with Email</button><div class="divider">or</div><button class="btn-outline" onclick="googleLogin()">Continue with Google</button><button class="btn-ghost" onclick="guestLogin()">Login as Guest</button><p class="error" id="auth-error"></p></div><div id="otp-box"><p>Code sent to <b id="otp-email"></b></p><p style="font-size:12px;color:#888;">Demo: Your code is <b id="demo-code"></b></p><input type="text" id="otp" placeholder="Enter 6-digit code" maxlength="6"><button class="btn-primary" onclick="verifyOtp()">Verify & Continue</button><p class="error" id="otp-error"></p></div></div></div>
+<div id="app" class="screen"><div class="app-header"><span id="user-name">Guest</span><img id="user-avatar" src="https://ui-avatars.com/api/?name=User&background=111111&color=fff"></div><div class="main-content"><div class="logo-text">DigiD</div><div class="logo-sub">Your Personal AI Companion</div><div class="search-box"><span class="search-icon">🔍</span><input type="text" id="home-search" placeholder="Ask DigiD anything... code, plan, research" onkeypress="if(event.key==='Enter') startHomeSearch()"></div><div class="quick-actions"><div class="pill" onclick="switchChat('builder')">🎨 Image Creator</div><div class="pill" onclick="switchChat('knowledge')">🧠 Research</div><div class="pill" onclick="switchChat('noor')">🕯️ Plan Maker</div><div class="pill" onclick="switchChat('builder')">💻 Code Builder</div></div></div></div>
+<div id="chat-view"><div class="chat-header"><span class="back-btn" onclick="closeChat()">←</span><div><div id="chat-title" style="font-weight:600;">Chat with Knowledge 🧠</div><div style="font-size:12px;color:#666;">DigiD Agent • Working AI</div></div></div><div class="chat-area" id="chat-area"></div><div class="input-bar"><input type="text" id="chat-input" placeholder="Type a message..."><button class="btn-primary" onclick="sendMessage()">Send</button></div></div>
 <div id="hamburger" onclick="toggleMenu()">☰</div>
-<div id="menu">
-    <div class="menu-item" onclick="switchChat('knowledge')">🧠 Knowledge - Research</div>
-    <div class="menu-item" onclick="switchChat('noor')">🕯️ Noor - Planning</div>
-    <div class="menu-item" onclick="switchChat('builder')">💻 Builder - Coding</div>
-    <div class="menu-item" onclick="openSettings()">⚙️ Settings & HF Token</div>
-    <div class="menu-item" onclick="logout()">🚪 Logout</div>
-</div>
-
-<div id="settings">
-    <div class="card">
-        <h1>Edit Profile & AI</h1>
-        <input type="text" id="edit-name" placeholder="Your Name">
-        <input type="file" id="edit-pic" accept="image/*">
-        <hr style="margin:12px 0; border:none; border-top:1px solid #eee;">
-        <input type="password" id="hf-token-input" placeholder="Paste HF Token hf_...">
-        <p class="token-hint">Get FREE token from <a href="#" onclick="require('electron').shell.openExternal('https://huggingface.co/settings/tokens')">huggingface.co/settings/tokens</a> - Create Read token</p>
-        <button class="btn-primary" onclick="saveSettings()">Save All</button>
-        <button class="btn-ghost" onclick="closeSettings()">Cancel</button>
-    </div>
-</div>
-
+<div id="menu"><div class="menu-item" onclick="switchChat('knowledge')">🧠 Knowledge - Research</div><div class="menu-item" onclick="switchChat('noor')">🕯️ Noor - Planning</div><div class="menu-item" onclick="switchChat('builder')">💻 Builder - Coding</div><div class="menu-item" onclick="openSettings()">⚙️ Settings & HF Token</div><div class="menu-item" onclick="logout()">🚪 Logout</div></div>
+<div id="settings"><div class="card"><h1>Edit Profile & AI</h1><input type="text" id="edit-name" placeholder="Your Name"><input type="file" id="edit-pic" accept="image/*"><hr style="margin:12px 0; border:none; border-top:1px solid #eee;"><input type="password" id="hf-token-input" placeholder="Paste HF Token hf_..."><p class="token-hint">Get FREE token from <a href="https://huggingface.co/settings/tokens" target="_blank">huggingface.co/settings/tokens</a> - Create Read token</p><button class="btn-primary" onclick="saveSettings()">Save All</button><button class="btn-ghost" onclick="closeSettings()">Cancel</button></div></div>
 <script>
-    let currentUser = null;
-    let currentChat = 'knowledge';
-    let tempEmail = '';
-    let tempOtp = '';
-    let chatHistory = { knowledge: [], noor: [], builder: [] };
-    let hfToken = localStorage.getItem('hf_token') || '';
-
-    // Splash
-    setTimeout(() => {
-        document.getElementById('splash').style.opacity = '0';
-        setTimeout(() => {
-            document.getElementById('splash').style.display = 'none';
-            checkLogin();
-        }, 500);
-    }, 2000);
-
-    function checkLogin() {
-        const user = localStorage.getItem('digid_user');
-        const history = localStorage.getItem('digid_chats');
-        const savedToken = localStorage.getItem('hf_token');
-        if (savedToken) { hfToken = savedToken; if(window.digidAPI) window.digidAPI.setToken(hfToken); }
-        if (history) { try { chatHistory = JSON.parse(history); } catch(e){} }
-        if (user) {
-            currentUser = JSON.parse(user);
-            showApp();
-        } else {
-            showScreen('auth');
-        }
+    let currentUser=null,currentChat='knowledge',tempEmail='',tempOtp='',chatHistory={knowledge:[],noor:[],builder:[]},hfToken=localStorage.getItem('hf_token')||'';
+    setTimeout(()=>{document.getElementById('splash').style.opacity='0';setTimeout(()=>{document.getElementById('splash').style.display='none';checkLogin();},500);},1500);
+    function checkLogin(){const user=localStorage.getItem('digid_user');const history=localStorage.getItem('digid_chats');const savedToken=localStorage.getItem('hf_token');if(savedToken){hfToken=savedToken; if(window.digidAPI) window.digidAPI.setToken(hfToken);} if(history){try{chatHistory=JSON.parse(history);}catch(e){}} if(user){currentUser=JSON.parse(user);showApp();}else{showScreen('auth');}}
+    function validateEmail(email){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);}
+    function startSignup(){const email=document.getElementById('email').value.trim();if(!validateEmail(email)){document.getElementById('auth-error').innerText='Valid email likho bhai';return;}document.getElementById('auth-error').innerText='';const users=JSON.parse(localStorage.getItem('digid_users')||'{}');if(users[email]){currentUser=users[email];localStorage.setItem('digid_user',JSON.stringify(currentUser));showApp();return;}tempEmail=email;tempOtp=Math.floor(100000+Math.random()*900000).toString();document.getElementById('otp-email').innerText=email;document.getElementById('demo-code').innerText=tempOtp;document.getElementById('email-box').style.display='none';document.getElementById('otp-box').style.display='block';}
+    function verifyOtp(){const otp=document.getElementById('otp').value;if(otp===tempOtp){const users=JSON.parse(localStorage.getItem('digid_users')||'{}');const newUser={email:tempEmail,name:tempEmail.split('@')[0],avatar:`https://ui-avatars.com/api/?name=${tempEmail[0].toUpperCase()}&background=111111&color=fff`,created:new Date().toISOString()};users[tempEmail]=newUser;localStorage.setItem('digid_users',JSON.stringify(users));localStorage.setItem('digid_user',JSON.stringify(newUser));currentUser=newUser;showApp();}else{document.getElementById('otp-error').innerText='Wrong code. Phir se try karo.';}}
+    function googleLogin(){const googleUser={email:'google_user@gmail.com',name:'Google User',avatar:`https://ui-avatars.com/api/?name=G&background=4285F4&color=fff`,created:new Date().toISOString()};localStorage.setItem('digid_user',JSON.stringify(googleUser));currentUser=googleUser;showApp();}
+    function guestLogin(){const guestUser={email:'guest@local',name:'Guest',avatar:`https://ui-avatars.com/api/?name=G&background=888&color=fff`,created:new Date().toISOString()};localStorage.setItem('digid_user',JSON.stringify(guestUser));currentUser=guestUser;showApp();}
+    function logout(){localStorage.removeItem('digid_user');location.reload();}
+    function showApp(){document.getElementById('user-name').innerText=currentUser.name;document.getElementById('user-avatar').src=currentUser.avatar;showScreen('app');}
+    function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+    function startHomeSearch(){const query=document.getElementById('home-search').value.trim();if(!query)return;switchChat('knowledge');setTimeout(()=>{addMessage(query,'user',true);handleAIResponse(query);},300);document.getElementById('home-search').value='';}
+    function toggleMenu(){document.getElementById('menu').classList.toggle('show');}
+    function switchChat(type){currentChat=type;const titles={knowledge:'Chat with Knowledge 🧠',noor:'Chat with Noor 🕯️',builder:'Chat with Builder 💻'};document.getElementById('chat-title').innerText=titles[type];document.getElementById('chat-view').style.display='flex';document.getElementById('chat-area').innerHTML='';document.getElementById('menu').classList.remove('show');loadChat();}
+    function closeChat(){document.getElementById('chat-view').style.display='none';}
+    function loadChat(){const history=chatHistory[currentChat]||[];if(history.length===0){const welcome={knowledge:'Salam! Main Knowledge hun. Koi bhi sawal pucho - research, facts - main asli AI se jawab dunga!',noor:'Salam! Main Noor hun. Koi bhi plan chahiye? Bolo main step-by-step bana dun.',builder:'Salam! Main Builder hun. Code chahiye? Website, app, bug fix - bolo pura working code dunga.'};addMessage(welcome[currentChat],'bot',false);}else{history.forEach(msg=>addMessage(msg.text,msg.type,false));}}
+    async function sendMessage(){const input=document.getElementById('chat-input');const msg=input.value.trim();if(!msg)return;addMessage(msg,'user',true);input.value='';await handleAIResponse(msg);}
+    async function handleAIResponse(userPrompt){
+        if(!hfToken){addMessage("⚠️ HF Token nahi mila! ☰ > Settings me jao aur huggingface.co/settings/tokens se FREE token (hf_...) paste karo. Tabhi asli AI chalega.",'bot',true);return;}
+        const typingId='typing-'+Date.now();const typingDiv=document.createElement('div');typingDiv.className='msg bot';typingDiv.id=typingId;typingDiv.innerText='DigiD soch raha hai...';document.getElementById('chat-area').appendChild(typingDiv);document.getElementById('chat-area').scrollTop=999999;
+        try{
+            let reply='';
+            if(window.digidAPI && window.digidAPI.chat){reply=await window.digidAPI.chat(userPrompt,currentChat);}else{reply=await callHuggingFaceDirect(userPrompt,currentChat);}
+            document.getElementById(typingId).remove();addMessage(reply,'bot',true);
+        }catch(e){document.getElementById(typingId).remove();addMessage(`Error: ${e.message}. HF Token check karo.`, 'bot', true);}
     }
-
-    function validateEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
-
-    function startSignup() {
-        const email = document.getElementById('email').value.trim();
-        if (!validateEmail(email)) { document.getElementById('auth-error').innerText = 'Valid email likho bhai'; return; }
-        document.getElementById('auth-error').innerText = '';
-        const users = JSON.parse(localStorage.getItem('digid_users') || '{}');
-        if (users[email]) {
-            currentUser = users[email];
-            localStorage.setItem('digid_user', JSON.stringify(currentUser));
-            showApp(); return;
-        }
-        tempEmail = email;
-        tempOtp = Math.floor(100000 + Math.random() * 900000).toString();
-        document.getElementById('otp-email').innerText = email;
-        document.getElementById('demo-code').innerText = tempOtp;
-        document.getElementById('email-box').style.display = 'none';
-        document.getElementById('otp-box').style.display = 'block';
+    async function callHuggingFaceDirect(prompt, agent){
+        const prompts={knowledge:`You are Knowledge, expert researcher. Answer: `,noor:`You are Noor, expert planner. Create detailed plan for: `,builder:`You are Builder, expert coder. Write working code for: `};
+        const res=await fetch("https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct",{method:"POST",headers:{"Authorization":`Bearer ${hfToken}`,"Content-Type":"application/json"},body:JSON.stringify({inputs:prompts[agent]+prompt,parameters:{max_new_tokens:800,temperature:0.7}})});
+        const data=await res.json();if(data.error) throw new Error(data.error);return data[0]?.generated_text?.split(prompt).pop().trim()||data[0]?.generated_text||"Jawab nahi mila";
     }
-
-    function verifyOtp() {
-        const otp = document.getElementById('otp').value;
-        if (otp === tempOtp) {
-            const users = JSON.parse(localStorage.getItem('digid_users') || '{}');
-            const newUser = { email: tempEmail, name: tempEmail.split('@')[0], avatar: `https://ui-avatars.com/api/?name=${tempEmail[0].toUpperCase()}&background=111111&color=fff`, created: new Date().toISOString() };
-            users[tempEmail] = newUser;
-            localStorage.setItem('digid_users', JSON.stringify(users));
-            localStorage.setItem('digid_user', JSON.stringify(newUser));
-            currentUser = newUser;
-            showApp();
-        } else { document.getElementById('otp-error').innerText = 'Wrong code. Phir se try karo.'; }
-    }
-
-    function googleLogin() {
-        const googleUser = { email: 'google_user@gmail.com', name: 'Google User', avatar: `https://ui-avatars.com/api/?name=G&background=4285F4&color=fff`, created: new Date().toISOString() };
-        localStorage.setItem('digid_user', JSON.stringify(googleUser)); currentUser = googleUser; showApp();
-    }
-    function guestLogin() {
-        const guestUser = { email: 'guest@local', name: 'Guest', avatar: `https://ui-avatars.com/api/?name=G&background=888&color=fff`, created: new Date().toISOString() };
-        localStorage.setItem('digid_user', JSON.stringify(guestUser)); currentUser = guestUser; showApp();
-    }
-    function logout() { localStorage.removeItem('digid_user'); location.reload(); }
-    function showApp() {
-        document.getElementById('user-name').innerText = currentUser.name;
-        document.getElementById('user-avatar').src = currentUser.avatar;
-        showScreen('app');
-    }
-    function showScreen(id) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
-
-    function startHomeSearch() {
-        const query = document.getElementById('home-search').value.trim();
-        if (!query) return;
-        switchChat('knowledge');
-        setTimeout(() => { addMessage(query, 'user', true); handleAIResponse(query); }, 300);
-        document.getElementById('home-search').value = '';
-    }
-
-    function toggleMenu() { document.getElementById('menu').classList.toggle('show'); }
-    function switchChat(type) {
-        currentChat = type;
-        const titles = { knowledge: 'Chat with Knowledge 🧠', noor: 'Chat with Noor 🕯️', builder: 'Chat with Builder 💻' };
-        document.getElementById('chat-title').innerText = titles[type];
-        document.getElementById('chat-view').style.display = 'flex';
-        document.getElementById('chat-area').innerHTML = '';
-        document.getElementById('menu').classList.remove('show');
-        loadChat();
-    }
-    function closeChat() { document.getElementById('chat-view').style.display = 'none'; }
-
-    function loadChat() {
-        const history = chatHistory[currentChat] || [];
-        if (history.length === 0) {
-            const welcome = {
-                knowledge: 'Salam! Main Knowledge hun. Koi bhi sawal pucho - research, facts, explaination - main asli AI se jawab dunga!',
-                noor: 'Salam! Main Noor hun. Koi bhi kaam ka plan chahiye? Business, trip, study - bolo main step-by-step plan bana dun.',
-                builder: 'Salam! Main Builder hun. Code chahiye? Website, app, Python script, bug fix - bolo main pura working code likh dunga.'
-            };
-            addMessage(welcome[currentChat], 'bot', false);
-        } else {
-            history.forEach(msg => addMessage(msg.text, msg.type, false));
-        }
-    }
-
-    async function sendMessage() {
-        const input = document.getElementById('chat-input');
-        const msg = input.value.trim();
-        if (!msg) return;
-        addMessage(msg, 'user', true);
-        input.value = '';
-        await handleAIResponse(msg);
-    }
-
-    async function handleAIResponse(userPrompt) {
-        // Check token
-        if (!hfToken) {
-            addMessage("⚠️ HF Token nahi mila! Settings me jao (☰ > Settings) aur huggingface.co se FREE token paste karo. Tabhi asli AI chalega.", 'bot', true);
-            return;
-        }
-
-        const typingId = 'typing-' + Date.now();
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'msg bot';
-        typingDiv.id = typingId;
-        typingDiv.innerText = 'DigiD soch raha hai...';
-        document.getElementById('chat-area').appendChild(typingDiv);
-        document.getElementById('chat-area').scrollTop = 999999;
-
-        try {
-            let reply = '';
-            if (window.digidAPI && window.digidAPI.chat) {
-                // Electron - via main process
-                reply = await window.digidAPI.chat(userPrompt, currentChat);
-            } else {
-                // Fallback - direct fetch (for browser testing)
-                reply = await callHuggingFaceDirect(userPrompt, currentChat);
-            }
-            document.getElementById(typingId).remove();
-            addMessage(reply, 'bot', true);
-        } catch (e) {
-            document.getElementById(typingId).remove();
-            addMessage(`Error: ${e.message}. HF Token check karo aur internet check karo.`, 'bot', true);
-        }
-    }
-
-    async function callHuggingFaceDirect(prompt, agent) {
-        const prompts = {
-            knowledge: `You are Knowledge, expert researcher. Answer: `,
-            noor: `You are Noor, expert planner. Create detailed plan for: `,
-            builder: `You are Builder, expert coder. Write working code for: `
-        };
-        const res = await fetch("https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct", {
-            method: "POST",
-            headers: { "Authorization": `Bearer ${hfToken}`, "Content-Type": "application/json" },
-            body: JSON.stringify({ inputs: prompts[agent] + prompt, parameters: { max_new_tokens: 800, temperature: 0.7 } })
-        });
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
-        return data[0]?.generated_text?.split(prompt).pop().trim() || data[0]?.generated_text || "Jawab nahi mila";
-    }
-
-    function addMessage(text, type, save = true) {
-        const div = document.createElement('div');
-        div.className = `msg ${type}`;
-        div.innerText = text;
-        document.getElementById('chat-area').appendChild(div);
-        document.getElementById('chat-area').scrollTop = 999999;
-        if (save) {
-            if(!chatHistory[currentChat]) chatHistory[currentChat] = [];
-            chatHistory[currentChat].push({ text, type, time: Date.now() });
-            localStorage.setItem('digid_chats', JSON.stringify(chatHistory));
-        }
-    }
-
-    function openSettings() {
-        document.getElementById('edit-name').value = currentUser?.name || '';
-        document.getElementById('hf-token-input').value = hfToken || '';
-        document.getElementById('settings').style.display = 'flex';
-        document.getElementById('menu').classList.remove('show');
-    }
-    function closeSettings() { document.getElementById('settings').style.display = 'none'; }
-    function saveSettings() {
-        const newName = document.getElementById('edit-name').value.trim();
-        const newToken = document.getElementById('hf-token-input').value.trim();
-        if (newToken) {
-            hfToken = newToken;
-            localStorage.setItem('hf_token', hfToken);
-            if(window.digidAPI) window.digidAPI.setToken(hfToken);
-        }
-        if (!newName) { alert('Name khali nahi ho sakta'); return; }
-        if(currentUser) {
-            currentUser.name = newName;
-            const fileInput = document.getElementById('edit-pic');
-            if (fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = e => { currentUser.avatar = e.target.result; finishSave(); };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else { finishSave(); }
-        } else { closeSettings(); }
-    }
-    function finishSave() {
-        localStorage.setItem('digid_user', JSON.stringify(currentUser));
-        const users = JSON.parse(localStorage.getItem('digid_users') || '{}');
-        if (users[currentUser.email]) { users[currentUser.email] = currentUser; localStorage.setItem('digid_users', JSON.stringify(users)); }
-        document.getElementById('user-name').innerText = currentUser.name;
-        document.getElementById('user-avatar').src = currentUser.avatar;
-        closeSettings();
-    }
-
-    document.getElementById('chat-input').addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+    function addMessage(text,type,save=true){const div=document.createElement('div');div.className=`msg ${type}`;div.innerText=text;document.getElementById('chat-area').appendChild(div);document.getElementById('chat-area').scrollTop=999999;if(save){if(!chatHistory[currentChat])chatHistory[currentChat]=[];chatHistory[currentChat].push({text,type,time:Date.now()});localStorage.setItem('digid_chats',JSON.stringify(chatHistory));}}
+    function openSettings(){document.getElementById('edit-name').value=currentUser?.name||'';document.getElementById('hf-token-input').value=hfToken||'';document.getElementById('settings').style.display='flex';document.getElementById('menu').classList.remove('show');}
+    function closeSettings(){document.getElementById('settings').style.display='none';}
+    function saveSettings(){const newName=document.getElementById('edit-name').value.trim();const newToken=document.getElementById('hf-token-input').value.trim();if(newToken){hfToken=newToken;localStorage.setItem('hf_token',hfToken);if(window.digidAPI)window.digidAPI.setToken(hfToken);}if(!newName){alert('Name khali nahi ho sakta');return;}if(currentUser){currentUser.name=newName;const fileInput=document.getElementById('edit-pic');if(fileInput.files[0]){const reader=new FileReader();reader.onload=e=>{currentUser.avatar=e.target.result;finishSave();};reader.readAsDataURL(fileInput.files[0]);}else{finishSave();}}else{closeSettings();}}
+    function finishSave(){localStorage.setItem('digid_user',JSON.stringify(currentUser));const users=JSON.parse(localStorage.getItem('digid_users')||'{}');if(users[currentUser.email]){users[currentUser.email]=currentUser;localStorage.setItem('digid_users',JSON.stringify(users));}document.getElementById('user-name').innerText=currentUser.name;document.getElementById('user-avatar').src=currentUser.avatar;closeSettings();}
+    document.getElementById('chat-input').addEventListener('keypress',e=>{if(e.key==='Enter')sendMessage();});
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
